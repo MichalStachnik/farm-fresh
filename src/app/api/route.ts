@@ -25,12 +25,10 @@ async function connectToDatabase(uri: string) {
 }
 
 export async function GET(request: Request) {
-  console.log('got here');
   // Get a database connection, cached or otherwise,
   const db = await connectToDatabase(uri);
   const collection = await db.collection('farms');
 
   const farms = await collection.find({}).toArray();
-  console.log(farms);
   return NextResponse.json({ farms });
 }

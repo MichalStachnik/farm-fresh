@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ReactMapGL, { Marker, Popup, ViewStateChangeEvent } from 'react-map-gl';
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { ViewportContext } from '@/contexts/ViewportContext';
 
 interface Farm {
   _id: string;
@@ -12,22 +13,14 @@ interface Farm {
   website: string;
 }
 
-const initialViewport = {
-  latitude: 41.5,
-  longitude: -73.5,
-  zoom: 9,
-};
-
 const FarmMap = () => {
-  const [viewport, setViewport] = useState(initialViewport);
+  const { viewport, setViewport } = useContext(ViewportContext);
   const [farms, setFarms] = useState<Farm[]>([]);
   const [selectedFarm, setSelectedFarm] = useState<Farm | null>(null);
 
   const fetchFarms = async () => {
     const res: Response = await fetch('/api');
     const data = await res.json();
-    // console.log('data', data);
-    // console.log('data.farms', data.farms);
     setFarms(data.farms);
   };
 
