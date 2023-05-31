@@ -4,7 +4,7 @@ import { ChangeEvent, useCallback, useContext, useState } from 'react';
 
 const debounce = (fn: (val: any) => Promise<void>, time: number) => {
   let timeoutID: number | NodeJS.Timeout | undefined;
-  return (arg) => {
+  return (arg: any) => {
     if (timeoutID) {
       clearTimeout(timeoutID);
     }
