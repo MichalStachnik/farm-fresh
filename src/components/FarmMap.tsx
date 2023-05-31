@@ -78,8 +78,6 @@ const FarmMap = () => {
         >
           <div style={{ background: 'green' }}>
             <h2>{selectedFarm.name}</h2>
-            <p>{selectedFarm.latitude}</p>
-            <p>{selectedFarm.longitude}</p>
             <a href={selectedFarm.website}>{selectedFarm.website}</a>
           </div>
         </Popup>
