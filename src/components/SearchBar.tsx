@@ -35,7 +35,9 @@ const SearchBar = () => {
   const { viewport, setViewport } = useContext(ViewportContext);
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
     setSearchValue(e.target.value);
     makeDebouncedQuery(e.target.value);
   };
@@ -48,9 +50,10 @@ const SearchBar = () => {
       const { features } = await res.json();
       setSuggestions(features);
     } catch (error) {
-      console.log('error sending request');
+      console.error('error sending request');
       console.error(error);
     }
+    setIsLoading(false);
   };
 
   const searchChange = async (searchValue: string) => {
@@ -68,6 +71,7 @@ const SearchBar = () => {
       latitude: suggestion.center[1],
       longitude: suggestion.center[0],
     });
+    setSuggestions([]);
   };
   return (
     <div className="w-full">
@@ -78,7 +82,7 @@ const SearchBar = () => {
         onChange={handleInputChange}
         className="w-full text-emerald-900 p-2 border border-emerald-600 rounded-md focus:border-emerald-900 focus:outline-none"
       />
-      {!suggestions.length && searchValue.length ? (
+      {isLoading ? (
         <div role="status" className="flex justify-center w-full my-4">
           <svg
             aria-hidden="true"

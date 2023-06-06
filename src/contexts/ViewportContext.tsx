@@ -8,7 +8,7 @@ interface ViewportContextInterface {
 
 const initialViewport = {
   latitude: 41.5,
-  longitude: -73.5,
+  longitude: -74,
   zoom: 9,
 };
 

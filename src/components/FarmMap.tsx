@@ -1,32 +1,19 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import ReactMapGL, { Marker, Popup, ViewStateChangeEvent } from 'react-map-gl';
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ViewportContext } from '@/contexts/ViewportContext';
+import { Farm, Filter } from './FarmMapWrapper';
 
-interface Farm {
-  _id: string;
-  name: string;
-  latitude: string;
-  longitude: string;
-  website: string;
+interface FarmMapProps {
+  farms: Farm[];
+  filters: Set<string>;
 }
 
-const FarmMap = () => {
+const FarmMap = ({ farms, filters }: FarmMapProps) => {
   const { viewport, setViewport } = useContext(ViewportContext);
-  const [farms, setFarms] = useState<Farm[]>([]);
   const [selectedFarm, setSelectedFarm] = useState<Farm | null>(null);
-
-  const fetchFarms = async () => {
-    const res: Response = await fetch('/api');
-    const data = await res.json();
-    setFarms(data.farms);
-  };
-
-  useEffect(() => {
-    fetchFarms();
-  }, []);
 
   const handleViewportChange = (viewport: ViewStateChangeEvent) => {
     setViewport(viewport.viewState);
@@ -36,31 +23,44 @@ const FarmMap = () => {
     <ReactMapGL
       {...viewport}
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_KEY}
-      style={{ width: 1000, height: 1000 }}
+      style={{ width: '100%', height: 1000 }}
       mapStyle="mapbox://styles/mapbox/dark-v9"
       onMove={handleViewportChange}
     >
-      {farms.map((farm) => {
-        return (
-          <Marker
-            key={farm._id}
-            longitude={Number(farm.longitude)}
-            latitude={Number(farm.latitude)}
-            style={{
-              cursor: 'pointer',
-              color: 'green',
-            }}
-            onClick={() => setSelectedFarm(farm)}
-          >
-            <Image
-              src="/seedling-solid.svg"
-              alt="seedling"
-              width={20}
-              height={20}
-            />
-          </Marker>
-        );
-      })}
+      {farms
+        .filter((farm) => {
+          if (!filters.size) return true;
+          else {
+            let contains = false;
+            for (const itemType of farm.itemType) {
+              if (filters.has(itemType)) {
+                contains = true;
+              }
+            }
+            return contains;
+          }
+        })
+        .map((farm) => {
+          return (
+            <Marker
+              key={farm._id}
+              longitude={Number(farm.longitude)}
+              latitude={Number(farm.latitude)}
+              style={{
+                cursor: 'pointer',
+                color: 'green',
+              }}
+              onClick={() => setSelectedFarm(farm)}
+            >
+              <Image
+                src="/seedling-solid.svg"
+                alt="seedling"
+                width={20}
+                height={20}
+              />
+            </Marker>
+          );
+        })}
       {selectedFarm ? (
         <Popup
           longitude={Number(selectedFarm.longitude)}
