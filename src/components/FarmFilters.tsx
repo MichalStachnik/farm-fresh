@@ -1,5 +1,4 @@
-import { MouseEvent, MouseEventHandler } from 'react';
-import { Filter } from './FarmMapWrapper';
+import { MouseEvent } from 'react';
 
 interface FarmFiltersProps {
   filters: Set<string>;
