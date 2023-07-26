@@ -1,8 +1,12 @@
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import prisma from '@/utils/prisma';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import bcrypt from 'bcrypt';
 
 export const options: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -11,10 +15,10 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: {
-          label: 'Username:',
-          type: 'text',
-          placeholder: 'your username',
+        email: {
+          label: 'Email:',
+          type: 'email',
+          placeholder: 'your email',
         },
         password: {
           label: 'Password',
@@ -22,26 +26,39 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        // const res = await fetch('/your/endpoint', {
-        //   method: 'POST',
-        //   body: JSON.stringify(credentials),
-        //   headers: { 'Content-Type': 'application/json' },
-        // });
-        // const user = await res.json();
-        // // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user;
-        // }
-        // // Return null if user data could not be retrieved
-        console.log('authorize..', credentials);
-        return null;
+        if (!credentials) {
+          throw new Error('no credentials');
+        }
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials?.email,
+          },
+        });
+
+        if (!user) {
+          throw new Error('no user');
+        }
+
+        if (!user.hashedPassword) {
+          throw new Error('no hash');
+        }
+
+        const match = await bcrypt.compare(
+          credentials?.password,
+          user.hashedPassword
+        );
+
+        if (!match) {
+          throw new Error('password error');
+        }
+
+        return user;
       },
     }),
   ],
+  secret: process.env.SECRET,
+  session: {
+    strategy: 'jwt',
+  },
+  debug: process.env.NODE_ENV === 'development',
 };
