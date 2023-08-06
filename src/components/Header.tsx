@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
-import Link from 'next/link';
 
 const Header = async () => {
   const session = await getServerSession(options);
