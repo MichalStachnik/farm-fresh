@@ -15,7 +15,7 @@ const Header = async () => {
         ) : (
           <>
             <button className="bg-green-900 px-4 py-2 rounded-lg text-l">
-              <Link href="/api/auth/signin">Sign In</Link>
+              {/* <Link href="/api/auth/signin">Sign In</Link> */}
             </button>
             <button className="bg-green-600 px-4 py-2 rounded-lg text-l">
               <Link href="/sign-up">Sign Up</Link>
