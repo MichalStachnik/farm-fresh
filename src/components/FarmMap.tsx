@@ -1,10 +1,10 @@
 'use client';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 import ReactMapGL, { Marker, Popup, ViewStateChangeEvent } from 'react-map-gl';
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ViewportContext } from '@/contexts/ViewportContext';
-import { Farm, Filter } from './FarmMapWrapper';
+import { Farm } from './FarmMapWrapper';
 
 interface FarmMapProps {
   farms: Farm[];

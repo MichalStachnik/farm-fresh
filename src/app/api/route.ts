@@ -25,7 +25,7 @@ async function connectToDatabase(uri: string) {
 }
 
 export async function GET(request: Request) {
-  // Get a database connection, cached or otherwise,
+  // Get a database connection, cached or otherwise
   const db = await connectToDatabase(uri);
   const collection = await db.collection('farms');
 
