@@ -14,17 +14,30 @@ export async function POST(req: NextRequest) {
   if (!user) return;
 
   const body = await req.json();
-  const { name, about, latitude, longitude } = body;
+  const { name, about, latitude, longitude, products } = body;
 
-  const farm = await prisma.farm.create({
-    data: {
+  const farm = await prisma.farm.upsert({
+    where: {
+      userId: user.id,
+    },
+    update: {
       name,
       about,
       latitude,
       longitude,
       userId: user.id,
+      products,
+    },
+    create: {
+      name,
+      about,
+      latitude,
+      longitude,
+      userId: user.id,
+      products,
     },
   });
 
+  console.log('farm created', farm);
   return NextResponse.json({ message: 'created', farm });
 }

@@ -22,7 +22,6 @@ model User {
 
   accounts Account[]
   farm     Farm?
-  products Product[]
 }
 
 model Account {
@@ -45,21 +44,27 @@ model Account {
 }
 
 model Farm {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @unique @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @unique @db.ObjectId
   name      String?
   about     String?
   latitude  String
   longitude String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   itemType  String[]
+  products  Product[]
 }
 
-model Product {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId String  @unique @db.ObjectId
-  name   String?
-  about  String?
-  price  Int
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+// model Product {
+//   id     String @id @default(auto()) @map("_id") @db.ObjectId
+//   farmId String @unique @db.ObjectId
+//   name   String
+//   about  String
+//   price  Int
+//   farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
+// }
+type Product {
+  name  String
+  about String
+  price String
 }

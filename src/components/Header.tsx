@@ -25,7 +25,15 @@ const Header = async () => {
           <>
             <button className="bg-green-500/50 hover:bg-emerald-500/50 px-4 py-2 rounded-lg text-l">
               {farm ? (
-                <Link href={`/farm/${farm.id}`}>My Farm</Link>
+                // <Link href={`/farm/${farm.id}`}>My Farm</Link>
+                <Link
+                  href={{
+                    pathname: `/farm/${farm.id}`,
+                    query: { farm: JSON.stringify(farm) },
+                  }}
+                >
+                  My Farm
+                </Link>
               ) : (
                 <Link href="/farm/add">Post My Farm</Link>
               )}
