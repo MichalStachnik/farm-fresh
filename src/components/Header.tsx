@@ -23,21 +23,23 @@ const Header = async () => {
       <div className="flex justify-end gap-2">
         {session ? (
           <>
-            <button className="bg-green-500/50 hover:bg-emerald-500/50 px-4 py-2 rounded-lg text-l">
-              {farm ? (
-                // <Link href={`/farm/${farm.id}`}>My Farm</Link>
-                <Link
-                  href={{
-                    pathname: `/farm/${farm.id}`,
-                    query: { farm: JSON.stringify(farm) },
-                  }}
-                >
+            {farm ? (
+              <Link
+                href={{
+                  pathname: `/farm/${farm.id}`,
+                }}
+              >
+                <button className="bg-green-500/50 hover:bg-emerald-500/50 px-4 py-2 rounded-lg text-l">
                   My Farm
-                </Link>
-              ) : (
-                <Link href="/farm/add">Post My Farm</Link>
-              )}
-            </button>
+                </button>
+              </Link>
+            ) : (
+              <Link href="/farm/add">
+                <button className="bg-green-500/50 hover:bg-emerald-500/50 px-4 py-2 rounded-lg text-l">
+                  Post My Farm
+                </button>
+              </Link>
+            )}
             <button className="bg-green-800/50 hover:bg-emerald-500/50 px-4 py-2 rounded-lg text-l">
               <Link href="/api/auth/signout">Sign Out</Link>
             </button>

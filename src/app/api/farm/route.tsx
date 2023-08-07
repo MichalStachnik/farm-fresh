@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { options } from '../auth/[...nextauth]/options';
 import { User } from '@prisma/client';
+// import { revalidatePath } from 'next/cache';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
@@ -38,6 +39,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log('farm created', farm);
+  // revalidatePath('/farm/[farm]');
+
   return NextResponse.json({ message: 'created', farm });
 }
