@@ -4,19 +4,12 @@
 // if (process.env.NODE_ENV === 'production') globalThis.prisma = client;
 
 // export default client;
-import { uri } from '@/app/api/route';
 import { PrismaClient } from '@prisma/client';
 
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: uri,
-      },
-    },
-  });
+  prisma = new PrismaClient();
 } else {
   let globalWithPrisma = global as typeof globalThis & {
     prisma: PrismaClient;
