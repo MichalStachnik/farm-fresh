@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = ""
 }
 
 model User {
@@ -21,6 +21,8 @@ model User {
   updatedAt      DateTime  @updatedAt
 
   accounts Account[]
+  farm     Farm?
+  products Product[]
 }
 
 model Account {
@@ -40,4 +42,24 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Farm {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  name      String?
+  about     String?
+  latitude  String
+  longitude String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemType  String[]
+}
+
+model Product {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId String  @unique @db.ObjectId
+  name   String?
+  about  String?
+  price  Int
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

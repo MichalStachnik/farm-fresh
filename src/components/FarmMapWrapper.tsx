@@ -20,6 +20,7 @@ const FarmMapWrapper = () => {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [filters, setFilters] = useState<Set<string>>(new Set());
 
+  // TODO: fetch server side and pass down
   const fetchFarms = async () => {
     const res: Response = await fetch('/api');
     const data = await res.json();

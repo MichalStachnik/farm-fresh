@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 const MongoClient = require('mongodb').MongoClient;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@farm-fresh.cx8s3uq.mongodb.net/`;
+export const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@farm-fresh.cx8s3uq.mongodb.net/`;
 
 // Create cached connection variable
 let cachedDb: any = null;
@@ -27,7 +27,8 @@ async function connectToDatabase(uri: string) {
 export async function GET(request: Request) {
   // Get a database connection, cached or otherwise
   const db = await connectToDatabase(uri);
-  const collection = await db.collection('farms');
+  // const collection = await db.collection('farms');
+  const collection = await db.collection('Farm');
 
   const farms = await collection.find({}).toArray();
   return NextResponse.json({ farms });
