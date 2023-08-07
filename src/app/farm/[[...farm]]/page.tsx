@@ -12,11 +12,17 @@ const PRODUCTS = [
 ];
 
 // import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
-const Farm = ({ ...params }) => {
+const Farm = ({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
   // const session = await getServerSession(options);
   // console.log('-->', params);
   // console.log('-->', params.params.farm);
-  const { farm } = params.params;
+  // const { slug } = params;
 
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -244,7 +250,7 @@ const Farm = ({ ...params }) => {
               return <div key={product.name}>im a product</div>;
             })}
 
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            {/* <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-2">
                 <label
                   htmlFor="first-name"
@@ -319,7 +325,7 @@ const Farm = ({ ...params }) => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
