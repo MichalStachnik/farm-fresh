@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 const MongoClient = require('mongodb').MongoClient;
 
-export const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@farm-fresh.cx8s3uq.mongodb.net/`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@farm-fresh.cx8s3uq.mongodb.net/`;
 
 // Create cached connection variable
 let cachedDb: any = null;
