@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import FarmFilters from './FarmFilters';
 import FarmMap from './FarmMap';
+import { Farm } from '@prisma/client';
 
 export interface Filter {
   [key: string]: boolean;
