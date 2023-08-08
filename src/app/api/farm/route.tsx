@@ -3,7 +3,14 @@ import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { options } from '../auth/[...nextauth]/options';
 import { User } from '@prisma/client';
+import { analyze } from '@/utils/ai';
 // import { revalidatePath } from 'next/cache';
+
+interface Analysis {
+  price: string;
+  type: string;
+  recipe: string;
+}
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
@@ -17,6 +24,31 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { name, about, latitude, longitude, products } = body;
 
+  let analysisPromises: Promise<Analysis | undefined>[] = [];
+
+  products.forEach(async (product: any) => {
+    analysisPromises.push(analyze(product.about));
+  });
+
+  const resolved = await Promise.allSettled(analysisPromises);
+
+  const productsWithAnalysis = products.map((product: any, index: number) => {
+    if (resolved[index].status === 'fulfilled') {
+      const analysis = (
+        resolved[index] as PromiseFulfilledResult<Analysis | undefined>
+      ).value;
+      return {
+        ...product,
+        analysis: {
+          ...analysis,
+        },
+      };
+    }
+    return {
+      ...product,
+    };
+  });
+
   const farm = await prisma.farm.upsert({
     where: {
       userId: user.id,
@@ -27,7 +59,7 @@ export async function POST(req: NextRequest) {
       latitude,
       longitude,
       userId: user.id,
-      products,
+      products: productsWithAnalysis,
     },
     create: {
       name,
@@ -35,7 +67,7 @@ export async function POST(req: NextRequest) {
       latitude,
       longitude,
       userId: user.id,
-      products,
+      products: productsWithAnalysis,
     },
   });
 

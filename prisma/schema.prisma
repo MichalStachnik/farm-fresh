@@ -64,7 +64,15 @@ model Farm {
 //   farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
 // }
 type Product {
-  name  String
-  about String
-  price String
+  id       String    @db.ObjectId
+  name     String
+  about    String
+  price    String
+  analysis Analysis?
+}
+
+type Analysis {
+  type   String
+  recipe String
+  price  String
 }

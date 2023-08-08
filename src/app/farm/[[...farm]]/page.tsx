@@ -26,8 +26,6 @@ const Farm = async ({
     });
   }
 
-  await analyze('write me a poem');
-
   return (
     <div className="h-full bg-white">
       {farm ? <FarmForm farm={farm} /> : null}
