@@ -3,15 +3,6 @@ import { useEffect, useState } from 'react';
 import FarmFilters from './FarmFilters';
 import FarmMap from './FarmMap';
 
-export interface Farm {
-  _id: string;
-  name: string;
-  latitude: string;
-  longitude: string;
-  website: string;
-  itemType: string[];
-}
-
 export interface Filter {
   [key: string]: boolean;
 }

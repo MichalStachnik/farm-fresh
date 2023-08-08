@@ -4,7 +4,7 @@ import ReactMapGL, { Marker, Popup, ViewStateChangeEvent } from 'react-map-gl';
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ViewportContext } from '@/contexts/ViewportContext';
-import { Farm } from './FarmMapWrapper';
+import { Farm } from '@prisma/client';
 
 interface FarmMapProps {
   farms: Farm[];
@@ -32,8 +32,8 @@ const FarmMap = ({ farms, filters }: FarmMapProps) => {
           if (!filters.size) return true;
           else {
             let contains = false;
-            for (const itemType of farm.itemType) {
-              if (filters.has(itemType)) {
+            for (const product of farm.products) {
+              if (product.analysis && filters.has(product.analysis.type)) {
                 contains = true;
               }
             }
@@ -43,7 +43,7 @@ const FarmMap = ({ farms, filters }: FarmMapProps) => {
         .map((farm) => {
           return (
             <Marker
-              key={farm._id}
+              key={farm.id}
               longitude={Number(farm.longitude)}
               latitude={Number(farm.latitude)}
               style={{
@@ -71,7 +71,7 @@ const FarmMap = ({ farms, filters }: FarmMapProps) => {
         >
           <div style={{ background: 'green' }}>
             <h2>{selectedFarm.name}</h2>
-            <a href={selectedFarm.website}>{selectedFarm.website}</a>
+            {/* <a href={selectedFarm.website}>{selectedFarm.website}</a> */}
           </div>
         </Popup>
       ) : null}

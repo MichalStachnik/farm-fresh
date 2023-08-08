@@ -14,8 +14,8 @@ const FarmFilters = ({ filters, handleFilterSelect }: FarmFiltersProps) => {
     <div className="flex flex-col mr-10">
       <button
         onClick={handleFilterClick}
-        value="vegetables"
-        className={filters.has('vegetables') ? `text-emerald-500` : 'initial'}
+        value="vegetable"
+        className={filters.has('vegetable') ? `text-emerald-500` : 'initial'}
       >
         vegetables
       </button>
