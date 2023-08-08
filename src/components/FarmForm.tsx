@@ -4,25 +4,16 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Farm } from '@prisma/client';
 
-const PRODUCTS: any[] = [
-  {
-    id: '0x',
-    name: 'apple',
-    about: 'tasty',
-    price: '10.99',
-  },
-];
-
-const FarmForm = ({ farm }: { farm: Farm }) => {
+const FarmForm = ({ farm }: { farm: Farm | null }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: farm.name || '',
-    about: farm.about || '',
-    latitude: farm.latitude || '',
-    longitude: farm.longitude || '',
+    name: farm?.name || '',
+    about: farm?.about || '',
+    latitude: farm?.latitude || '',
+    longitude: farm?.longitude || '',
   });
 
-  const [products, setProducts] = useState<any[]>(farm.products || PRODUCTS);
+  const [products, setProducts] = useState<any[]>(farm?.products || []);
 
   const handleProductChange = (
     e: ChangeEvent<HTMLInputElement>,

@@ -28,7 +28,7 @@ const Farm = async ({
 
   return (
     <div className="h-full bg-white">
-      {farm ? <FarmForm farm={farm} /> : null}
+      <FarmForm farm={farm} />
     </div>
   );
 };

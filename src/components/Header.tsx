@@ -2,19 +2,22 @@ import Link from 'next/link';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
 import prisma from '@/utils/prisma';
-import { Farm } from '@prisma/client';
+import { Farm, User } from '@prisma/client';
 
 const Header = async () => {
   const session = await getServerSession(options);
 
   let farm: Farm | null = null;
   if (session?.user && session.user.email) {
-    const user = await prisma.user.findUnique({
+    const user: User | null = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
-    farm = await prisma.farm.findUnique({
-      where: { userId: user?.id },
-    });
+
+    if (user) {
+      farm = await prisma.farm.findUnique({
+        where: { userId: user.id },
+      });
+    }
   }
 
   return (

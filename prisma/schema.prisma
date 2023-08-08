@@ -48,8 +48,8 @@ model Farm {
   userId    String    @unique @db.ObjectId
   name      String?
   about     String?
-  latitude  String
-  longitude String
+  latitude  String?
+  longitude String?
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   itemType  String[]
   products  Product[]
@@ -64,7 +64,7 @@ model Farm {
 //   farm   Farm   @relation(fields: [farmId], references: [id], onDelete: Cascade)
 // }
 type Product {
-  id       String    @db.ObjectId
+  id       String    @default(uuid())
   name     String
   about    String
   price    String

@@ -40,9 +40,9 @@ const getPrompt = async (product: any) => {
 export const analyze = async (query: string) => {
   const input = await getPrompt(query);
   const model = new OpenAI({ temperature: 0 });
-  const res = await model.call(input);
+  const result = await model.call(input);
   try {
-    return parser.parse(res);
+    return parser.parse(result);
   } catch (error) {
     console.error('error parsing', error);
   }
