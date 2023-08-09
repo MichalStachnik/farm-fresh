@@ -2,7 +2,7 @@ import prisma from '@/utils/prisma';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { options } from '../auth/[...nextauth]/options';
-import { User } from '@prisma/client';
+import { Product, User } from '@prisma/client';
 import { analyze } from '@/utils/ai';
 // import { revalidatePath } from 'next/cache';
 
@@ -26,17 +26,21 @@ export async function POST(req: NextRequest) {
 
   let analysisPromises: Promise<Analysis | undefined>[] = [];
 
-  products.forEach(async (product: any) => {
-    analysisPromises.push(analyze(`${product.name}: ${product.about}`));
+  products.forEach(async (product: Product) => {
+    if (!product.analysis) {
+      analysisPromises.push(analyze(`${product.name}: ${product.about}`));
+    }
   });
 
   const resolved = await Promise.allSettled(analysisPromises);
 
-  const productsWithAnalysis = products.map((product: any, index: number) => {
-    if (resolved[index].status === 'fulfilled') {
+  let counter = 0;
+  const productsWithAnalysis = products.map((product: any) => {
+    if (!product.analysis && resolved[counter].status === 'fulfilled') {
       const analysis = (
-        resolved[index] as PromiseFulfilledResult<Analysis | undefined>
+        resolved[counter] as PromiseFulfilledResult<Analysis | undefined>
       ).value;
+      counter++;
       return {
         ...product,
         analysis: {

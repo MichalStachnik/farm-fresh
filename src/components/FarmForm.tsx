@@ -39,6 +39,23 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
   const handleAddProduct = () => {
     setProducts([...products, { name: '', about: '', price: '' }]);
   };
+
+  const handleGetTip = async () => {
+    const res = await fetch('/api/analysis', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: 'Give me a tip on how to better my farm based on my products',
+      }),
+    });
+
+    if (res.ok) {
+      console.log('res', res);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const res = await fetch('/api/farm', {
@@ -328,24 +345,38 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
                       />
                     </div>
                   </div>
-                  <div className="sm:col-span-6 text-slate-800">
-                    Inferred type: {product.analysis.type}
-                  </div>
-                  <div className="sm:col-span-6 text-slate-800">
-                    Suggested recipe: {product.analysis.recipe}
-                  </div>
-                  <div className="sm:col-span-6 text-slate-800">
-                    Suggested price per pound: {product.analysis.price}
-                  </div>
+                  {product.analysis ? (
+                    <>
+                      <div className="sm:col-span-6 text-slate-800">
+                        Inferred type: {product.analysis.type}
+                      </div>
+                      <div className="sm:col-span-6 text-slate-800">
+                        Suggested recipe: {product.analysis.recipe}
+                      </div>
+                      <div className="sm:col-span-6 text-slate-800">
+                        Suggested price per pound: {product.analysis.price}
+                      </div>
+                    </>
+                  ) : null}
                 </div>
               );
             })}
+
+            <div>
+              <button
+                type="button"
+                className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={handleGetTip}
+              >
+                Get a Tip
+              </button>
+            </div>
 
             <div className="flex justify-center mt-5">
               <button
                 type="button"
                 className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={() => handleAddProduct()}
+                onClick={handleAddProduct}
               >
                 + Add
               </button>

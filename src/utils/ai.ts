@@ -1,7 +1,12 @@
 import { OpenAI } from 'langchain/llms/openai';
 import { StructuredOutputParser } from 'langchain/output_parsers';
 import { PromptTemplate } from 'langchain/prompts';
+import { Document } from 'langchain/document';
+import { loadQARefineChain } from 'langchain/chains';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import z from 'zod';
+import { Product } from '@prisma/client';
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -45,4 +50,32 @@ export const analyze = async (query: string) => {
   } catch (error) {
     console.error('error parsing', error);
   }
+};
+
+export const getAnalysis = async (query: string, products: Product[]) => {
+  const docs = products.map((product) => {
+    return new Document({
+      pageContent: `${product.name} ${product.about}`,
+      metadata: { source: product.id },
+    });
+  });
+
+  const model = new OpenAI({ temperature: 0 });
+
+  // Iterates over the documents one by one, updating an intermediate answer with each iteration
+  const chain = loadQARefineChain(model);
+
+  const embeddings = new OpenAIEmbeddings();
+
+  const store = await MemoryVectorStore.fromDocuments(docs, embeddings);
+
+  // Get the relevent documents based on the query
+  const relevantDocs = await store.similaritySearch(query);
+
+  const res = await chain.call({
+    input_documents: relevantDocs,
+    question: query,
+  });
+
+  return res.output_text;
 };
