@@ -25,6 +25,7 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
 
     const newProduct = {
       ...product,
+      analysis: null,
       [field]: e.target.value,
     };
 
