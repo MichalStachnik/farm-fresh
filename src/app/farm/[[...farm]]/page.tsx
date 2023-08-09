@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth/next';
 import prisma from '@/utils/prisma';
 import { Farm } from '@prisma/client';
 import FarmForm from '@/components/FarmForm';
-import { analyze } from '@/utils/ai';
 
 // import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 const Farm = async ({

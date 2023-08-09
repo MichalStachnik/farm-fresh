@@ -8,7 +8,7 @@ const parser = StructuredOutputParser.fromZodSchema(
     type: z
       .string()
       .describe(
-        'the type of product that was created, it can be vegtable, fruit, pork, or beef.'
+        'the type of product that was created, it can ONLY be a vegetable, fruit, pork, poultry, or beef.'
       ),
     recipe: z
       .string()
@@ -21,19 +21,18 @@ const parser = StructuredOutputParser.fromZodSchema(
   })
 );
 
-const getPrompt = async (product: any) => {
+const getPrompt = async (query: string) => {
   const instructions = parser.getFormatInstructions();
   const prompt = new PromptTemplate({
     template:
-      'Analyze the following product entry. Follow the intructions and format your response to match the format instructions, no matter what! \n{instructions}\n{entry}',
+      'Analyze the following product entry. It will come in the form "<Title>: <Description>" Follow the intructions and format your response to match the format instructions, no matter what! \n{instructions}\n{entry}',
     inputVariables: ['entry'],
     partialVariables: { instructions },
   });
 
   const input = await prompt.format({
-    entry: product,
+    entry: query,
   });
-
   return input;
 };
 

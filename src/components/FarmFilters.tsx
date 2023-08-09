@@ -21,10 +21,24 @@ const FarmFilters = ({ filters, handleFilterSelect }: FarmFiltersProps) => {
       </button>
       <button
         onClick={handleFilterClick}
+        value="fruit"
+        className={filters.has('fruit') ? `text-emerald-500` : 'initial'}
+      >
+        fruit
+      </button>
+      <button
+        onClick={handleFilterClick}
         value="pork"
         className={filters.has('pork') ? `text-emerald-500` : 'initial'}
       >
         pork
+      </button>
+      <button
+        onClick={handleFilterClick}
+        value="poultry"
+        className={filters.has('poultry') ? `text-emerald-500` : 'initial'}
+      >
+        poultry
       </button>
       <button
         onClick={handleFilterClick}

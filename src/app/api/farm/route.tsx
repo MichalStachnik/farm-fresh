@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   let analysisPromises: Promise<Analysis | undefined>[] = [];
 
   products.forEach(async (product: any) => {
-    analysisPromises.push(analyze(product.about));
+    analysisPromises.push(analyze(`${product.name}: ${product.about}`));
   });
 
   const resolved = await Promise.allSettled(analysisPromises);
