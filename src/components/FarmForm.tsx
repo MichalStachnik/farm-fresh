@@ -303,7 +303,7 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
               );
             })}
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-4 mt-5">
               <button
                 disabled={isTipLoading}
                 type="button"
