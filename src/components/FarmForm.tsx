@@ -76,6 +76,7 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
         ...formData,
         products,
       }),
+      next: { revalidate: 3 },
     });
     setIsLoading(false);
 
