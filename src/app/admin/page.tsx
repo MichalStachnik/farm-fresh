@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 async function Admin() {
   const session = await getServerSession(options);
 
-  console.log('session', session);
   if (!session) {
     redirect('/api/auth/signin?callbackUrl=/');
   }

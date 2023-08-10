@@ -28,7 +28,6 @@ export async function POST(req: NextRequest) {
 
   products.forEach(async (product: Product) => {
     if (!product.analysis) {
-      console.log('this product needs an analysis', product);
       analysisPromises.push(analyze(`${product.name}: ${product.about}`));
     }
   });
