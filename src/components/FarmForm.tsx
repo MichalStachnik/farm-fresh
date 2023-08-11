@@ -45,6 +45,10 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
     setProducts([...products, { name: '', about: '', price: '' }]);
   };
 
+  const handleDeleteProduct = (id: string) => {
+    setProducts(products.filter((product) => product.id !== id));
+  };
+
   const handleGetTip = async () => {
     setIsTipLoading(true);
     const res = await fetch('/api/analysis', {
@@ -297,9 +301,10 @@ const FarmForm = ({ farm }: { farm: Farm | null }) => {
             {products.map((product) => {
               return (
                 <Product
+                  key={product.id}
                   product={product}
                   handleProductChange={handleProductChange}
-                  key={product.id}
+                  handleDeleteProduct={handleDeleteProduct}
                 />
               );
             })}

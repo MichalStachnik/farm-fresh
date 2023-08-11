@@ -77,5 +77,6 @@ export async function POST(req: NextRequest) {
 
   // revalidatePath('/farm/[farm]');
 
+  // await res.revalidate('/farm/')
   return NextResponse.json({ message: 'created', farm });
 }
