@@ -22,7 +22,7 @@ const Header = async () => {
 
   return (
     <header className="w-full h-auto bg-black p-2 flex justify-between items-center">
-      <p className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600">
+      <p className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-emerald-100 to-emerald-900">
         FarmFresh
       </p>
       <div className="flex justify-end gap-2">

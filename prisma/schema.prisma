@@ -68,6 +68,7 @@ type Product {
   name     String
   about    String
   price    String
+  image    String?
   analysis Analysis?
 }
 

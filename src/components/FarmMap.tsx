@@ -1,6 +1,11 @@
 'use client';
 import { useContext, useState } from 'react';
-import ReactMapGL, { Marker, Popup, ViewStateChangeEvent } from 'react-map-gl';
+import ReactMapGL, {
+  NavigationControl,
+  Marker,
+  Popup,
+  ViewStateChangeEvent,
+} from 'react-map-gl';
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { ViewportContext } from '@/contexts/ViewportContext';
@@ -75,6 +80,7 @@ const FarmMap = ({ farms, filters }: FarmMapProps) => {
           </div>
         </Popup>
       ) : null}
+      <NavigationControl />
     </ReactMapGL>
   );
 };
